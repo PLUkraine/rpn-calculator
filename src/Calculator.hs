@@ -4,27 +4,34 @@ where
 import Text.Read(readMaybe)
 import Control.Monad
 import Control.Applicative((<$>))
+import Operators
 operators = "+-*/^"
 
--- Evaluate RPN expression using stack
-foldFunc :: [Double] -> String -> Maybe [Double]
-foldFunc (x:y:zs) "+" = Just $ x+y : zs
-foldFunc (x:y:zs) "-" = Just $ y-x : zs
-foldFunc (x:y:zs) "*" = Just $ x*y : zs
-foldFunc (x:y:zs) "/" = do 
-    guard (x/=0)
-    return $ y/x : zs
-foldFunc (x:y:zs) "^" = do
-    guard $ x/=0 || y/=0
-    return $ y ** x : zs
-foldFunc xs elem = (:xs) <$> readMaybe elem
+-- Function for folding the list of tokens, uses stack for evaluation
+foldFunc :: [Double] -> String -> Either String [Double]
+foldFunc (x:y:zs) "+" = Right $ x+y : zs
+foldFunc (x:y:zs) "-" = Right $ y-x : zs
+foldFunc (x:y:zs) "*" = Right $ x*y : zs
+foldFunc (x:y:zs) "/" = if x /= 0 
+                        then Right $ y/x : zs
+                        else Left "Zero division"
+foldFunc (x:y:zs) "^" = if x/=0 || y/=0
+                        then Right $ y**x : zs
+                        else Left "0 to power 0 is ambiguous"
+foldFunc xs elem
+    | isOp elem = Left $ "Couldn't apply operator " ++ elem  
+            ++ ": too few arguments"
+    | otherwise = case readMaybe elem of
+        Just num -> Right $ num : xs
+        Nothing  -> Left $ "Parse error on \"" ++ elem ++ "\"" 
 
 -- Get result from the stack
-extractResult :: Maybe [Double] -> Maybe Double
-extractResult (Just [val]) = Just val
-extractResult _ = Nothing
+extractResult :: Either String [Double] -> Either String Double
+extractResult (Right [val]) = Right val
+extractResult (Right _ ) = Left  "Invalid input expression"
+extractResult (Left msg) = Left msg 
 
 -- Evaluate RPN from String value
-runCalculator :: String -> Maybe Double
+runCalculator :: String -> Either String Double
 runCalculator = extractResult . foldM foldFunc [] . words
 

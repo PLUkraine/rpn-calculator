@@ -14,9 +14,7 @@ main = do
     then interpretInput
     else processCmd cmdArgs
 
-processList :: [String] -> [Maybe Double]
 processList = fmap ( parseToRPN >=> runCalculator )
-
 
 processCmd :: [String] ->  IO ()
 processCmd = mapM_ print . processList
@@ -26,11 +24,11 @@ interpretInput = do
     putStrLn "Enter expression"
     expr <- getLine
     case parseToRPN expr >>= runCalculator of 
-        Just val -> putStrLn $ "Evaluated " ++ show val
-        Nothing  -> putStrLn "Bad expression"
+        Right val -> putStrLn $ "Evaluated " ++ show val
+        Left msg -> putStrLn $ "Bad expression. Error message: " ++ msg
     -- Ask user to continue
     putStrLn "Continue? y/N"
     confirm <- getLine
-    if confirm /= "N" then interpretInput
+    if confirm /= "N" then putStrLn (replicate 20 '-') >> interpretInput
     else putStrLn "Bye"
 
