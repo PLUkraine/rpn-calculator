@@ -18,8 +18,13 @@ foldFunc (x:y:zs) "/" = if x /= 0
 foldFunc (x:y:zs) "^" = if x/=0 || y/=0
                         then Right $ y**x : zs
                         else Left "0 to power 0 is ambiguous"
+foldFunc (x:zs) "sin" = Right $ sin x : zs
+foldFunc (x:zs) "cos" = Right $ cos x : zs
+foldFunc (x:y:zs) "max" = Right $ max x y : zs 
 foldFunc xs elem
     | isOp elem = Left $ "Couldn't apply operator " ++ elem  
+            ++ ": too few arguments"
+    | isFunc elem = Left $ "Couldn't apply function " ++ elem
             ++ ": too few arguments"
     | otherwise = case readMaybe elem of
         Just num -> Right $ num : xs

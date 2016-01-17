@@ -1,10 +1,16 @@
 module Operators
 (isOp, leftAssoc, prec,
-isNum, isDot, isBrace)
+isNum, isDot, isBrace, isFunc, isFuncSepar)
 where
 import Text.Read(readMaybe)
 
 operators = "+-*/^"
+functions = ["sin", "cos", "max"]
+
+isFunc :: String -> Bool
+isFunc t = t `elem` functions
+
+isFuncSepar d = d == ","
 
 isOp :: String -> Bool
 isOp [t] = t `elem` operators
