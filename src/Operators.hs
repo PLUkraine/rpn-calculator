@@ -1,8 +1,6 @@
 module Operators
-(isOp,
-leftAssoc,
-prec,
-isNum)
+(isOp, leftAssoc, prec,
+isNum, isDot, isBrace)
 where
 import Text.Read(readMaybe)
 
@@ -16,6 +14,9 @@ isNum :: String -> Bool
 isNum str = case readMaybe str :: Maybe Double of 
     Just _ -> True
     Nothing -> False
+
+isDot d = d == '.'
+isBrace d = d `elem` "()"
 
 leftAssoc :: String -> Bool
 leftAssoc "^" = False

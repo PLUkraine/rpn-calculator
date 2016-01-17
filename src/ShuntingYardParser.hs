@@ -5,6 +5,7 @@ module ShuntingYardParser
 (parseToRPN)
 where
 import Operators
+import Lexer
 import Data.List(intercalate)
 import Control.Monad
 import Control.Applicative((<$>))
@@ -51,4 +52,4 @@ endParse (parse, ops) = (unwords . reverse) <$> foldM foldParse parse ops
 
 -- Parse infix form to RPN
 parseToRPN :: String -> Either String RPN
-parseToRPN = endParse <=< foldM foldFunc ([], []) . words
+parseToRPN = endParse <=< foldM foldFunc ([], []) <=< parseToTokens 

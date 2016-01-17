@@ -18,7 +18,10 @@ cabal-version:       >=1.10
 
 executable rpnCalculator
   main-is:             Main.hs
-  other-modules:       Calculator, ShuntingYardParser, Operators
+  other-modules:       Calculator, 
+                       ShuntingYardParser, 
+                       Operators,
+                       Lexer
   -- other-extensions:    
   build-depends:       base >=4.7 && <4.8
   hs-source-dirs:      src

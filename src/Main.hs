@@ -15,9 +15,12 @@ main = do
     else processCmd cmdArgs
 
 processList = fmap ( parseToRPN >=> runCalculator )
+outputEither :: Either String Double -> IO ()
+outputEither ( Right res ) = print res
+outputEither ( Left msg ) = putStrLn msg
 
 processCmd :: [String] ->  IO ()
-processCmd = mapM_ print . processList
+processCmd = mapM_ outputEither . processList
 
 interpretInput :: IO ()
 interpretInput = do
