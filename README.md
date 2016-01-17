@@ -4,7 +4,7 @@ RPN Calculator
 Features
 --------
 * Console calculator
-* Works with +, -, *, /, ^
+* Works with +, -, \*, /, ^
    * Works with unary +, - as well
 * Works with functions *max, sin, cos*. Functions are called like this: f(a,b)
 * Recognizes constants like *euler number (e)* and *pi*
@@ -14,10 +14,10 @@ Features
 
 Examples
 --------
-1+2*3^4  
-sin(pi/2) * cos(0)  
+1+2\*3^4  
+sin(pi/2) \* cos(0)  
 max(2.2, max(4^2, 3^3))  
-13^(3^(1/2)+(-2))*3/2  
+13^(3^(1/2)+(-2))\*3/2  
 
 Build
 -----
