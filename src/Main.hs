@@ -4,6 +4,7 @@ where
 import Calculator 
 import Operators
 import ShuntingYardParser
+import Lexer
 import Control.Monad((>=>))
 import Control.Applicative((<$>))
 import System.Environment(getArgs)

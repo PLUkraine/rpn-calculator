@@ -47,8 +47,8 @@ foldToTokens arg@(tokens, parse, NoDotNumber, pos) t
     | otherwise = Left $ "Parse error on \"" ++ [t] ++ "\" at pos " ++ show pos
 foldToTokens arg@(tokens, parse, Function, pos) t
     | isAlphaNum t = Right $ consumeToParse arg t Function
-    | isBrace t = Right $ pushParseWithInput arg t
     | isSpace t = Right $ pushParseIgnoringInput arg
+    | isOp [t] || isBrace t || isFuncSepar [t] = Right $ pushParseWithInput arg t
     | otherwise = Left $ "Parse error on \"" ++ [t] ++ "\" at pos " ++ show pos
 foldToTokens arg@(tokens, _, Whitespace, pos) t
     | isDigit t = Right (tokens, [t], Number, pos+1)
