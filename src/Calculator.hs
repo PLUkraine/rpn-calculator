@@ -17,12 +17,16 @@ foldFunc (x:y:zs) "*" = Right $ x*y : zs
 foldFunc (x:y:zs) "/" = if x /= 0 
                         then Right $ y/x : zs
                         else Left "Zero division"
-foldFunc (x:y:zs) "^" = if x/=0 || y/=0
-                        then Right $ y**x : zs
-                        else Left "0 to power 0 is ambiguous"
+foldFunc (x:y:zs) "^" 
+    | abs x < 1 && y < 0 = Left "Can't do x^y when |y|<1 and x<0"
+    | x==0 && y==0 = Left "0 to power 0 is ambiguous"
+    | otherwise = Right $ y**x : zs
 foldFunc (x:zs) "sin" = Right $ sin x : zs
 foldFunc (x:zs) "cos" = Right $ cos x : zs
 foldFunc (x:y:zs) "max" = Right $ max x y : zs 
+foldFunc (x:zs) "sqrt" = if x >= 0 
+                         then Right $ sqrt x : zs
+                         else Left "Can't take square root of negative number" 
 foldFunc xs elem
     | isConst elem = Right $ getConst elem : xs
     | isOp elem = Left $ "Couldn't apply operator " ++ elem  

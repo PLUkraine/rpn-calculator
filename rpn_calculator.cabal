@@ -26,3 +26,30 @@ executable rpnCalculator
   build-depends:       base >=4.7 && <4.8
   hs-source-dirs:      src
   default-language:    Haskell2010
+
+test-suite calc-tests
+  default-language:  Haskell2010
+  type:              exitcode-stdio-1.0
+  hs-source-dirs:    tests, src
+  main-is:           CalculatorTestSuite.hs
+  build-depends:     base,
+                     HUnit,
+                     HUnit-approx,
+                     QuickCheck,
+                     test-framework,
+                     test-framework-hunit,
+                     test-framework-quickcheck2
+
+test-suite lexer-tests
+  default-language:  Haskell2010
+  type:              exitcode-stdio-1.0
+  hs-source-dirs:    tests, src
+  main-is:           TestLexer.hs
+  build-depends:     base,
+                     text,
+                     HUnit,
+                     HUnit-approx,
+                     QuickCheck,
+                     test-framework,
+                     test-framework-hunit,
+                     test-framework-quickcheck2

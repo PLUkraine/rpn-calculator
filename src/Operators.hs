@@ -11,7 +11,7 @@ import Data.List(lookup)
 -- constant tokens
 operators = "+-*/^np"
 unaries   = [("-","n"), ("+", "p")]
-functions = ["sin", "cos", "max"]
+functions = ["sin", "cos", "max", "sqrt"]
 constants = [("pi", pi), ("e", exp 1)]
 separ = ","
 
