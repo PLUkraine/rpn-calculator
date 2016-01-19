@@ -10,26 +10,26 @@ import Control.Monad(foldM)
 data State = Number | Dot | NoDotNumber | Function | Whitespace
 type Token = String
 
--- Appends parse to tokens' list if it isn't empty
+-- |Appends /parse/ to /tokens' list/ if it isn't empty
 appendToken :: String -> [String] -> [String]
 appendToken parse tokens = if null parse 
                            then tokens 
                            else parse:tokens
 
--- Add input symbol to parse
+-- |Add input symbol to /parse/
 consumeToParse :: ([ Token ], Token, State, Int) -> Char -> State -> ([ Token ], Token, State, Int)
 consumeToParse (tokens, parse, _, pos) t newState = (tokens, parse ++ [t], newState, pos+1)
 
--- Push parse to tokens and ignore input token
+-- |Push /parse/ to /tokens' list/ and ignore input token
 pushParseIgnoringInput :: ([ Token ], Token, State, Int) -> ([ Token ], Token, State, Int)
 pushParseIgnoringInput (tokens, parse, _, pos) = (appendToken parse tokens, "", Whitespace, pos+1)
 
--- Push input sympol and then parse to tokens
+-- |Push input symbol and then /parse/ to /tokens/
 pushParseWithInput :: ([ Token ], Token, State, Int) -> Char -> ([ Token ], Token, State, Int)
 pushParseWithInput (tokens, parse, _, pos) t = ([t]:appendToken parse tokens, "", Whitespace, pos+1)
                                       
 
--- Function that acts like automaton
+-- |Function that acts like automaton
 foldToTokens :: ([ Token ], Token, State, Int) -> Char -> Either String ([Token], Token, State, Int)
 foldToTokens arg@(tokens, parse, Dot, pos) t
     | isDigit t = Right $ consumeToParse arg t NoDotNumber
@@ -58,10 +58,10 @@ foldToTokens arg@(tokens, _, Whitespace, pos) t
     | otherwise = Left $ "Parse error on \"" ++ [t] ++ "\" at pos " ++ show pos
 
 
--- Get list of tokens, append parse if there is any and reverse it
+-- |Get list of tokens, append /parse/ if there is any and reverse it
 getFirst :: ([String], String, State, Int) -> [String]
 getFirst (x, y, _, _) = reverse (appendToken y x)
 
--- Split string to tokens
+-- |Split string to tokens
 parseToTokens :: String -> Either String [String]
 parseToTokens str =  getFirst <$> foldM foldToTokens ([], "", Whitespace, 1) str

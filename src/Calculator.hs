@@ -7,7 +7,7 @@ import Control.Applicative((<$>))
 import Operators
 operators = "+-*/^"
 
--- Function for folding the list of tokens, uses stack for evaluation
+-- |Function for folding the list of tokens, uses stack for evaluation
 foldFunc :: [Double] -> String -> Either String [Double]
 foldFunc (x:y:zs) "+" = Right $ x+y : zs
 foldFunc (x:y:zs) "-" = Right $ y-x : zs
@@ -33,13 +33,13 @@ foldFunc xs elem
         Just num -> Right $ num : xs
         Nothing  -> Left $ "Parse error on \"" ++ elem ++ "\"" 
 
--- Get result from the stack
+-- |Get result from the stack
 extractResult :: Either String [Double] -> Either String Double
 extractResult (Right [val]) = Right val
 extractResult (Right _ ) = Left  "Invalid input expression"
 extractResult (Left msg) = Left msg 
 
--- Evaluate RPN from String value
+-- |Evaluate RPN from String value
 runCalculator :: String -> Either String Double
 runCalculator = extractResult . foldM foldFunc [] . words
 

@@ -15,14 +15,18 @@ main = do
     then interpretInput
     else processCmd cmdArgs
 
+-- |Get list of expressions and evaluates them
 processList = fmap ( parseToRPN >=> runCalculator )
+-- |Output result of evaluation
 outputEither :: Either String Double -> IO ()
 outputEither ( Right res ) = print res
 outputEither ( Left msg ) = putStrLn msg
 
+-- |Evaluate each expression and output result
 processCmd :: [String] ->  IO ()
 processCmd = mapM_ outputEither . processList
 
+-- |Ask user to type expression, evaluate it and ask for another one
 interpretInput :: IO ()
 interpretInput = do
     putStrLn "Enter expression"
